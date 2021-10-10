@@ -20,3 +20,6 @@ class Verifier:
 
     def verification(proof) -> bool:
         pass
+
+if __name__ == '__main__':
+    # sample run

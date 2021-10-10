@@ -8,4 +8,4 @@ Never use in production!
 * Bowe et al. "Recursive Proof Composition without a Trusted Setup": https://ia.cr/2019/1021
 
 ### License
-**GPL 3.0**. The ellipic curve prototype `dumb25519.py` is directly copied from Sarang Noether's skunkworks (https://github.com/SarangNoether/skunkworks).
+**GPL 3.0**. The elliptic curve prototype `dumb25519.py` is based from Sarang Noether's skunkworks (https://github.com/SarangNoether/skunkworks).

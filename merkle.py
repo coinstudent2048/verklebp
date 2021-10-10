@@ -13,3 +13,6 @@ class Dropbox:
     def __init__(self):
         pass
     # define function per phase
+
+if __name__ == '__main__':
+    # sample run
