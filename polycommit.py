@@ -5,21 +5,21 @@
 import dumb25519
 
 class Prover:
-    def __init__(self):
-        pass
-    # define functions per phase
+	def __init__(self):
+		pass
+	# define functions per phase
 
-    # fiat-shamir challenge
-    def challenge(prefix, *data) -> Scalar:
-        return dumb25519.hash_to_scalar(prefix, *data)
+	# fiat-shamir challenge
+	def challenge(prefix, *data) -> Scalar:
+		return dumb25519.hash_to_scalar(prefix, *data)
 
 class Verifier:
-    def __init__(self):
-        pass
-    # define function per phase
+	def __init__(self):
+		pass
+	# define function per phase
 
-    def verification(proof) -> bool:
-        pass
+	def verification(proof) -> bool:
+		pass
 
 if __name__ == '__main__':
-    # sample run
+	# sample run

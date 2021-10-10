@@ -5,14 +5,14 @@ import dumb25519
 
 # note: names will be changed later
 class Alice:
-    def __init__(self):
-        pass
-    # define functions per phase
+	def __init__(self):
+		pass
+	# define functions per phase
 
 class Dropbox:
-    def __init__(self):
-        pass
-    # define function per phase
+	def __init__(self):
+		pass
+	# define function per phase
 
 if __name__ == '__main__':
-    # sample run
+	# sample run
