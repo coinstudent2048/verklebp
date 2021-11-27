@@ -7,12 +7,12 @@ import dumb25519
 
 # polynomial evaluation poly(x)
 #    * coeff: ScalarVector of coefficients
-def poly_eval(x: Scalar, coeff: ScalarVector) -> Scalar:
+def poly_eval(x: Scalar, coeff: ScalarVector) -> tuple:
     powers_x = ScalarVector()
     powers_x.append(Scalar(1))
     for i in range(len(coeff) - 1):
         powers_x.append(x * powers_x[i])
-    return powers_x ** coeff
+    return powers_x ** coeff, powers_x
 
 # polynomial multiplication
 #    * poly_a: ScalarVector of polynomial 'a'
@@ -47,7 +47,7 @@ if __name__ == '__main__':
     # test
     passed = True
     for i in my_points:
-        passed &= (poly_eval(i[0], my_coeffs) == i[1])
+        passed &= (poly_eval(i[0], my_coeffs)[0] == i[1])
     if passed:
         print("The implementation of Langrange interpolation works!")
     else:
