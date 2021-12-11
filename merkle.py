@@ -1,5 +1,5 @@
 # Merkle Tree
-# Source: Section 2.2 of https://math.mit.edu/research/highschool/primes/materials/2018/Kuszmaul.pdf
+# Source: Subsection 2.2 of https://math.mit.edu/research/highschool/primes/materials/2018/Kuszmaul.pdf
 #
 # unoptimized
 

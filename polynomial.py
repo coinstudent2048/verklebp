@@ -5,14 +5,20 @@
 from dumb25519 import Scalar, Point, ScalarVector, PointVector
 import dumb25519
 
-# polynomial evaluation poly(x)
-#    * coeff: ScalarVector of coefficients
-def poly_eval(x: Scalar, coeff: ScalarVector) -> tuple:
+# list of powers of x: [1, x, x ** 2, ..., x ** degree]
+#    * x: Scalar
+#    * degree: int
+def powers(x: Scalar, degree: int) -> ScalarVector:
     powers_x = ScalarVector()
     powers_x.append(Scalar(1))
-    for i in range(len(coeff) - 1):
+    for i in range(degree):
         powers_x.append(x * powers_x[i])
-    return powers_x ** coeff, powers_x
+    return powers_x
+
+# polynomial evaluation poly(x)
+#    * coeff: ScalarVector of coefficients
+def poly_eval(x: Scalar, coeff: ScalarVector) -> Scalar:
+    return powers(x, len(coeff) - 1) ** coeff
 
 # polynomial multiplication
 #    * poly_a: ScalarVector of polynomial 'a'
@@ -47,8 +53,8 @@ if __name__ == '__main__':
     # test
     passed = True
     for i in my_points:
-        passed &= (poly_eval(i[0], my_coeffs)[0] == i[1])
+        passed &= (poly_eval(i[0], my_coeffs) == i[1])
     if passed:
-        print("The implementation of Langrange interpolation works!")
+        print('The implementation of Langrange interpolation works!')
     else:
-        print("There's a problem in the implementation of Langrange interpolation.")
+        print('There\'s a problem in the implementation of Langrange interpolation.')
