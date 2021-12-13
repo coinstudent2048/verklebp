@@ -85,8 +85,9 @@ class VerkleTree:
         return datum, proofs
 
 def verifier(index: int, datum: object, proofs: list, root: Point) -> bool:
-    # first check: the P of last proof should be the root
-    if root != proofs[-1]['state'][0]:
+    # first check: the v of the first proof should be the hash_to_scalar of datum
+    # second check: the P of last proof should be the root
+    if proofs[0]['state'][2] != dumb25519.hash_to_scalar('verkle', datum) or proofs[-1]['state'][0] != root:
         return False
     for proof in proofs:
         # other checks: just verify the proofs!
