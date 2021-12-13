@@ -1,7 +1,7 @@
 # verklebp
-Verkle trees with Bulletproofs based polynomial commitment [Prototype]
+Verkle trees with inner product argument (IPA) based polynomial commitment [Prototype]
 
-Never use in production!
+Never use in production! It is not even efficient!!
 
 ### References:
 * Kuszmaul. "Verkle Trees": https://math.mit.edu/research/highschool/primes/materials/2018/Kuszmaul.pdf

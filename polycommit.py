@@ -10,16 +10,13 @@ import dumb25519
 
 H = dumb25519.hash_to_point('H')
 
-def prove(x: Scalar, a_vec: ScalarVector, v: Scalar) -> dict:
+def prove(G_vec: PointVector, P: Point, x: Scalar, v: Scalar, a_vec: ScalarVector, r: Scalar) -> dict:
     dlen = len(a_vec)
     if dlen & (dlen - 1) != 0 or dlen <= 1:   # check if not power of two
         raise ValueError('length of polynomial not a power of 2 or less than 2')
 
-    # build statement
+    # build statement and P_prm
     b_vec = powers(x, dlen - 1)
-    G_vec = PointVector([dumb25519.random_point() for i in range(len(a_vec))])
-    r = dumb25519.random_scalar()   # blinding factor
-    P = a_vec ** G_vec + r * H
     statement = [P, x, v, G_vec]
     U = dumb25519.hash_to_point('U Fiat-Shamir hash', *statement)
     P_prm = P + v * U
@@ -108,13 +105,17 @@ def verify(proof: dict) -> bool:
     return c * Q + R == z1 * (G + b  * U) + z2 * H
 
 if __name__ == '__main__':
-    x = Scalar(98765)
-    poly = ScalarVector([Scalar(1000 + 2 * i) for i in range(4)])
-    v = poly_eval(x, poly)
+    # build proving relation ((P, x, v); (a_vec, r)) and G_vec
+    x = dumb25519.random_scalar()
+    a_vec = ScalarVector([dumb25519.random_scalar() for i in range(4)])   # polynomial coefficients
+    v = poly_eval(x, a_vec)
+    G_vec = PointVector([dumb25519.random_point() for i in range(len(a_vec))])
+    r = dumb25519.random_scalar()   # blinding factor
+    P = a_vec ** G_vec + r * H   # the actual commitment
 
     # test 1 (should work)
     print('Test 1: start prover')
-    transcript = prove(x, poly, v)
+    transcript = prove(G_vec, P, x, v, a_vec, r)
     print('Test 1: start verifier')
     if verify(transcript):
         print('Verified!')
@@ -123,7 +124,7 @@ if __name__ == '__main__':
 
     # test 2 (should NOT work)
     print('Test 2: start prover')
-    transcript = prove(x, poly, v + Scalar(1))   # wrong v
+    transcript = prove(G_vec, P, x + Scalar(1), v, a_vec, r)   # wrong x
     print('Test 2: start verifier')
     if verify(transcript):
         print('Something\'s wrong :(')
@@ -131,10 +132,19 @@ if __name__ == '__main__':
         print('Prover you\'re desperate!')
 
     # test 3 (should NOT work)
-    poly[1] += Scalar(1)
     print('Test 3: start prover')
-    transcript = prove(x, poly, v)   # wrong poly
+    transcript = prove(G_vec, P, x, v + Scalar(1), a_vec, r)   # wrong v
     print('Test 3: start verifier')
+    if verify(transcript):
+        print('Something\'s wrong :(')
+    else:
+        print('Prover you\'re desperate!')
+
+    # test 4 (should NOT work)
+    a_vec[1] += Scalar(1)
+    print('Test 4: start prover')
+    transcript = prove(G_vec, P, x, v, a_vec, r)   # wrong a_vec
+    print('Test 4: start verifier')
     if verify(transcript):
         print('Something\'s wrong :(')
     else:
