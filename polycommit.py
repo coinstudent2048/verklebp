@@ -10,6 +10,7 @@ import dumb25519
 
 H = dumb25519.hash_to_point('H')
 
+
 def prove(G_vec: PointVector, P: Point, x: Scalar, v: Scalar, a_vec: ScalarVector, r: Scalar) -> dict:
     dlen = len(a_vec)
     if dlen & (dlen - 1) != 0 or dlen <= 1:   # check if not power of two
@@ -27,10 +28,12 @@ def prove(G_vec: PointVector, P: Point, x: Scalar, v: Scalar, a_vec: ScalarVecto
     l_vec = ScalarVector()
     r_vec = ScalarVector()
     u_vec = ScalarVector()
+    
     splt = dlen   # vector splitter (the lo & hi subscripts from paper)
     G_prm = G_vec
     a_prm = a_vec
     b_prm = b_vec
+    
     while splt > 1:
         splt //= 2   # split in half evenly
         l_j = dumb25519.random_scalar()   # blinding factor
@@ -60,6 +63,7 @@ def prove(G_vec: PointVector, P: Point, x: Scalar, v: Scalar, a_vec: ScalarVecto
     zkopen = [R, z1, z2]
 
     return {'state': statement, 'L': L_vec, 'R': R_vec, 'zkopen': zkopen}
+
 
 def verify(proof: dict) -> bool:
     # build u_vec (index j is reversed)
@@ -103,6 +107,7 @@ def verify(proof: dict) -> bool:
     z1 = proof['zkopen'][1]
     z2 = proof['zkopen'][2]
     return c * Q + R == z1 * (G + b  * U) + z2 * H
+
 
 if __name__ == '__main__':
     # build proving relation ((P, x, v); (a_vec, r)) and G_vec
