@@ -5,20 +5,23 @@
 from dumb25519 import Scalar, Point, ScalarVector, PointVector
 import dumb25519
 
-# list of powers of x: [1, x, x ** 2, ..., x ** degree]
+
+# list of powers of x: [x ** 0, x ** 1, x ** 2, ..., x ** degree]
 #    * x: Scalar
 #    * degree: int
 def powers(x: Scalar, degree: int) -> ScalarVector:
     powers_x = ScalarVector()
-    powers_x.append(Scalar(1))
-    for i in range(degree):
-        powers_x.append(x * powers_x[i])
+    for i in range(degree + 1):
+        powers_x.append(x ** i)
     return powers_x
 
-# polynomial evaluation poly(x)
+
+# polynomial evaluation poly_eval(x)
 #    * coeff: ScalarVector of coefficients
 def poly_eval(x: Scalar, coeff: ScalarVector) -> Scalar:
-    return powers(x, len(coeff) - 1) ** coeff
+    degree = len(coeff) - 1
+    return powers(x, degree) ** coeff
+
 
 # polynomial multiplication
 #    * poly_a: ScalarVector of polynomial 'a'
@@ -29,6 +32,7 @@ def poly_mul(poly_a: ScalarVector, poly_b: ScalarVector) -> ScalarVector:
         for j in range(len(poly_b)):
             prod[i + j] += poly_a[i] * poly_b[j]
     return ScalarVector(prod)
+
 
 # Lagrange interpolation
 #    * coords: list of coordinates (in Scalar)
@@ -44,6 +48,8 @@ def lagrange(coords: list) -> ScalarVector:
         poly += basis * coords[i][1]
     return poly
 
+
+
 if __name__ == '__main__':
     my_points = [(Scalar(-1), dumb25519.random_scalar()),
                 (Scalar(0), dumb25519.random_scalar()),
@@ -53,8 +59,8 @@ if __name__ == '__main__':
     # test
     passed = True
     for i in my_points:
-        passed &= (poly_eval(i[0], my_coeffs) == i[1])
+        passed = (poly_eval(i[0], my_coeffs) == i[1])
     if passed:
-        print('The implementation of Langrange interpolation works!')
+        print('The implementation of Lagrange interpolation works!')
     else:
-        print('There\'s a problem in the implementation of Langrange interpolation.')
+        print('There\'s a problem in the implementation of Lagrange interpolation.')
