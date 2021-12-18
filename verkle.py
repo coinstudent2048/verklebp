@@ -27,6 +27,8 @@ class VerkleTree:
         self.depth = exponent2 // exponent   # tree depth minus the level of datablocks
         self.exponent = exponent
         self.datablocks = datablocks
+        self.verkletreecommits = []
+        self.verkletreeblipoly = []
 
     def hashAllCurrNodes(self, nodes: list) -> list:
         return [dumb25519.hash_to_scalar('verkle', node) for node in nodes]
@@ -34,8 +36,6 @@ class VerkleTree:
     def buildVerkleTree(self, printAllCommit=False) -> Point:
         veclen = 2 ** self.exponent   # vector/polynomial length
         currnodes = self.datablocks
-        self.verkletreecommits = []
-        self.verkletreeblipoly = []
         self.G_vec = PointVector([dumb25519.random_point() for i in range(veclen)])   # (public)
         while len(currnodes) > 1:
             cache1 = []   # for commitments (public)
@@ -84,6 +84,7 @@ class VerkleTree:
             currpathdata = P
         return datum, proofs
 
+
 def verifier(index: int, datum: object, proofs: list, root: Point) -> bool:
     # first check: the v of the first proof should be the hash_to_scalar of datum
     # second check: the P of last proof should be the root
@@ -94,6 +95,7 @@ def verifier(index: int, datum: object, proofs: list, root: Point) -> bool:
         if not verify(proof):
             return False
     return True
+
 
 if __name__ == '__main__':
     # len(data) should be a power of 2 ** exponent...
