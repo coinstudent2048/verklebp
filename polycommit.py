@@ -28,12 +28,12 @@ def prove(G_vec: PointVector, P: Point, x: Scalar, v: Scalar, a_vec: ScalarVecto
     l_vec = ScalarVector()
     r_vec = ScalarVector()
     u_vec = ScalarVector()
-    
+
     splt = dlen   # vector splitter (the lo & hi subscripts from paper)
     G_prm = G_vec
     a_prm = a_vec
     b_prm = b_vec
-    
+
     while splt > 1:
         splt //= 2   # split in half evenly
         l_j = dumb25519.random_scalar()   # blinding factor

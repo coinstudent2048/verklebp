@@ -6,6 +6,7 @@
 from dumb25519 import Scalar, Point, ScalarVector, PointVector
 import dumb25519
 
+
 class MerkleTree:
     def __init__(self, datablocks: list):
         datalength = len(datablocks)
@@ -45,6 +46,7 @@ class MerkleTree:
             index >>= 1
         return datum, hashes
 
+
 def verifier(index: int, datum: object, hashes: list, root: Scalar) -> bool:
     curr = dumb25519.hash_to_scalar('data', datum)
     for hash in hashes:
@@ -55,7 +57,8 @@ def verifier(index: int, datum: object, hashes: list, root: Scalar) -> bool:
             curr = dumb25519.hash_to_scalar('merkle', hash, curr)
         index >>= 1
     return curr == root
-    
+
+
 if __name__ == '__main__':
     # len(data) should be a power of 2
     # source: https://www.random.org/strings/

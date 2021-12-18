@@ -49,7 +49,6 @@ def lagrange(coords: list) -> ScalarVector:
     return poly
 
 
-
 if __name__ == '__main__':
     my_points = [(Scalar(-1), dumb25519.random_scalar()),
                 (Scalar(0), dumb25519.random_scalar()),

@@ -8,6 +8,7 @@ from polynomial import powers, poly_eval, lagrange
 from polycommit import prove, verify
 import dumb25519, polycommit
 
+
 class VerkleTree:
     def __init__(self, datablocks: list, exponent: int):
         # the number of children of parent node is 2 ** exponent. exponent is not checked
