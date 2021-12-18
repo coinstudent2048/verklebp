@@ -59,7 +59,7 @@ if __name__ == '__main__':
     # test
     passed = True
     for i in my_points:
-        passed = (poly_eval(i[0], my_coeffs) == i[1])
+        passed &= (poly_eval(i[0], my_coeffs) == i[1])
     if passed:
         print('The implementation of Lagrange interpolation works!')
     else:
