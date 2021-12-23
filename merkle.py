@@ -34,6 +34,10 @@ class MerkleTree:
         return blockhashes[0]   # return merkle tree root
 
     def requestData(self, index: int) -> tuple:
+        # note: in some implementations, self.merkletreehashes is not stored, unlike
+        # in here. in those cases, when datum is requested, the whole merkle tree is
+        # built again, and until then the following lines below, which just gets the
+        # relevant hashes and return those to the requester, are performed.
         num_blocks = len(self.datablocks)
         num_levels = len(self.merkletreehashes)
         if not(0 <= index < num_blocks):
