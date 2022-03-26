@@ -42,11 +42,14 @@ class Scalar:
         # Generated from an integer value
         if isinstance(x,int):
             self.x = x % l
-        # Generated from a hex representation
+        # Generated from a hex representation or 'l'
         elif isinstance(x,str):
             try:
-                x = bytes.fromhex(x)
-                self.x = sum(2**i * bit(x,i) for i in range(0,b)) % l
+                if x == 'l':
+                    self.x = l # technically not in scalar field; used for main subgroup membership
+                else:
+                    x = bytes.fromhex(x)
+                    self.x = sum(2**i * bit(x,i) for i in range(0,b)) % l
             except:
                 raise TypeError
         else:
